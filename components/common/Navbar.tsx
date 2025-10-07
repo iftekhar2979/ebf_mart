@@ -78,7 +78,7 @@ const Navbar = () => {
                   'hover:text-pink-500 transition-colors'
                 )}
               >
-                {item.label} {item.dropdown && <span className="ml-1">▼</span>}
+                {item.label} 
               </Link>
             ))}
           </div>

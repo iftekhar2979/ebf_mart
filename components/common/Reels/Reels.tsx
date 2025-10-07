@@ -3,6 +3,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { FaSpinner } from 'react-icons/fa'
 import clsx from 'clsx'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import FullscreenViewer from './FullScreenViewer'
+
+gsap.registerPlugin(ScrollTrigger)
 
 interface Reel {
   id: number
@@ -30,29 +35,60 @@ const reelsData: Reel[] = [
     caption: 'Supermart Aisle',
     borderColor: 'border-black',
   },
+  {
+    id: 4,
+    videoSrc: '/static/reels.mp4',
+    caption: 'Supermart Aisle',
+    borderColor: 'border-black',
+  },
 ]
 
 const ReelsSection = () => {
-  const [currentReelIndex, setCurrentReelIndex] = useState(0)
-  const [isLoading, setIsLoading] = useState(true)
-  const videoRef = useRef<HTMLVideoElement | null>(null)
+  const [fullscreenIndex, setFullscreenIndex] = useState<number | null>(null)
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([])
 
-  const currentReel = reelsData[currentReelIndex]
-
-  const handleVideoEnded = () => {
-    setIsLoading(true)
-    const nextIndex = (currentReelIndex + 1) % reelsData.length
-    setCurrentReelIndex(nextIndex)
-  }
-
-  const handleVideoLoaded = () => {
-    setIsLoading(false)
-    videoRef.current?.play()
-  }
-
+  // Animate items as they scroll into view
   useEffect(() => {
-    setIsLoading(true)
-  }, [currentReelIndex])
+    videoRefs.current.forEach((ref, i) => {
+      if (!ref) return
+      gsap.fromTo(
+        ref.parentElement,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          scrollTrigger: {
+            trigger: ref.parentElement,
+            start: 'top 80%',
+            toggleActions: 'play none none reverse',
+          },
+          duration: 0.8,
+          ease: 'power3.out',
+        }
+      )
+    })
+  }, [])
+
+  // Auto-play/pause on scroll into view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target as HTMLVideoElement
+          if (entry.isIntersecting) {
+            video.play().catch(() => {})
+          } else {
+            video.pause()
+          }
+        })
+      },
+      { threshold: 0.6 }
+    )
+
+    videoRefs.current.forEach((v) => v && observer.observe(v))
+
+    return () => observer.disconnect()
+  }, [])
 
   return (
     <section className="py-12 px-4 md:px-16 bg-white">
@@ -60,36 +96,39 @@ const ReelsSection = () => {
         EXPLORE REELS
       </h2>
 
-      <div className="flex justify-center">
-        <div
-          className={clsx(
-            'w-72 h-[420px] relative rounded-[35%] overflow-hidden border-4 transition-all duration-300',
-            currentReel.borderColor
-          )}
-        >
-          {isLoading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-white z-10 bg-opacity-80">
-              <FaSpinner className="animate-spin text-pink-500 text-4xl" />
-            </div>
-          )}
-
-          <video
-            key={currentReel.id}
-            ref={videoRef}
-            src={currentReel.videoSrc}
-            className="w-full h-full object-cover"
-            autoPlay
-            muted
-            onEnded={handleVideoEnded}
-            onLoadedData={handleVideoLoaded}
-            playsInline
-          />
-
-          <p className="absolute bottom-2 left-1/2 -translate-x-1/2 text-center text-sm text-white bg-black/50 px-3 py-1 rounded-full z-20">
-            {currentReel.caption}
-          </p>
-        </div>
+      <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-3">
+        {reelsData.map((reel, index) => (
+          <div
+            key={reel.id}
+            className={clsx(
+              'relative w-full h-[400px] overflow-hidden rounded-[35%] border-4',
+              reel.borderColor
+            )}
+            onClick={() => setFullscreenIndex(index)}
+          >
+            <video
+              ref={(el) => (videoRefs.current[index] = el)}
+              src={reel.videoSrc}
+              className="w-full h-full object-cover"
+              muted
+              playsInline
+              controls={false}
+            />
+            <p className="absolute bottom-2 left-1/2 -translate-x-1/2 text-center text-sm text-white bg-black/50 px-3 py-1 rounded-full z-20">
+              {reel.caption}
+            </p>
+          </div>
+        ))}
       </div>
+
+      {/* Fullscreen modal view */}
+      {fullscreenIndex !== null && (
+        <FullscreenViewer
+          reels={reelsData}
+          currentIndex={fullscreenIndex}
+          onClose={() => setFullscreenIndex(null)}
+        />
+      )}
     </section>
   )
 }
