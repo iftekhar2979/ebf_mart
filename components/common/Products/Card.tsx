@@ -10,6 +10,7 @@ import Image from 'next/image'
 
 // --- GSAP Import ---
 import gsap from 'gsap'
+import Link from 'next/link'
 // -------------------
 
 type ProductCardProps = {
@@ -89,7 +90,7 @@ export const ProductCard = ({
       <CardContent className="pt-4 px-4 pb-2">
         {/* Title */}
         <div className="flex justify-between items-center mb-1">
-          <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
+          <Link href={`/products/${index}`} className="text-lg font-semibold text-gray-800">{title}</Link>
         </div>
 
         {/* Rating */}

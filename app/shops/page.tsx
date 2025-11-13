@@ -34,7 +34,7 @@ export default function FavoriteSupermarketsPage() {
       <FavoriteSupermarketsGrid supermarkets={fakeSupermarkets} />
 
       
-      {/* <div className="mx-16 my-10"> */}
+      <div className="mx-16 my-10">
       
                 <AppPromoBanner
               imageUrl={promoData.imageUrl}
@@ -43,7 +43,7 @@ export default function FavoriteSupermarketsPage() {
               ctaLabel={promoData.ctaLabel}
               ctaLink={promoData.ctaLink}
             />
-            {/* </div> */}
+            </div>
     </div>
   );
 }
