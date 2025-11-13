@@ -21,7 +21,7 @@ export default function Home() {
 
           <CategoryGrid />
 
-<div className="mx-16">
+<div className="mx-16 my-10">
 
           <AppPromoBanner
         imageUrl={promoData.imageUrl}

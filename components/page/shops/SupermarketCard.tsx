@@ -23,8 +23,8 @@ export const SupermarketCard: React.FC<SupermarketCardProps> = ({
   onToggleFavorite 
 }) => {
   const [isFavorite, setIsFavorite] = React.useState(supermarket.isFavorite);
-  const cardRef = React.useRef<HTMLDivElement>(null);
-  const heartRef = React.useRef<SVGSVGElement>(null);
+//   const cardRef = React.useRef<HTMLDivElement>(null);
+//   const heartRef = React.useRef<SVGSVGElement>(null);
 
 //   // GSAP Entrance Animation
 //   useGSAP(() => {
@@ -42,24 +42,24 @@ export const SupermarketCard: React.FC<SupermarketCardProps> = ({
     setIsFavorite(prev => !prev);
     onToggleFavorite?.(supermarket.id); // Call parent handler if provided
 
-    gsap.timeline()
-      .to(heartRef.current, { 
-        scale: 1.2, 
-        duration: 0.15, 
-        ease: "back.out(3)", 
-        yoyo: true, 
-        repeat: 1 
-      })
-      .to(heartRef.current, { 
-        fill: isFavorite ? 'none' : '#ec4899', // Fill based on new state
-        stroke: isFavorite ? '#a1a1aa' : '#ec4899', // Stroke based on new state
-        duration: 0.2
-      }, "<"); // Animate fill/stroke at the same time as scale out
+    // gsap.timeline()
+    //   .to(heartRef.current, { 
+    //     scale: 1.2, 
+    //     duration: 0.15, 
+    //     ease: "back.out(3)", 
+    //     yoyo: true, 
+    //     repeat: 1 
+    //   })
+    //   .to(heartRef.current, { 
+    //     fill: isFavorite ? 'none' : '#ec4899', // Fill based on new state
+    //     stroke: isFavorite ? '#a1a1aa' : '#ec4899', // Stroke based on new state
+    //     duration: 0.2
+    //   }, "<"); // Animate fill/stroke at the same time as scale out
   };
 
   return (
     <div 
-      ref={cardRef}
+    //   ref={cardRef}
       className="relative w-full rounded-xl overflow-hidden bg-white shadow-lg 
                  hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
     >
@@ -82,7 +82,7 @@ export const SupermarketCard: React.FC<SupermarketCardProps> = ({
           aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
         >
           <Heart 
-            ref={heartRef}
+            // ref={heartRef}
             className="h-6 w-6 transition-colors duration-200"
             fill={isFavorite ? '#ec4899' : 'none'} // Pink-600
             stroke={isFavorite ? '#ec4899' : '#a1a1aa'} // Gray-400 for outline
@@ -92,9 +92,9 @@ export const SupermarketCard: React.FC<SupermarketCardProps> = ({
 
       {/* Content */}
       <div className="p-4">
-        <h3 className="text-lg font-semibold text-gray-800 mb-2 truncate">
+       <Link href={`/shops/${supermarket.id}`} className="text-lg font-semibold text-gray-800 mb-2 truncate" >
           {supermarket.name}
-        </h3>
+        </Link>
         <div className="flex items-center text-gray-500 text-sm">
           <MapPin className="h-4 w-4 mr-1 text-pink-500 shrink-0" />
           <span className="truncate">{supermarket.location}</span>

@@ -2,9 +2,10 @@
 
 import React from 'react'
 import { ProductCard } from './Card' // Adjust path as needed
-import { products } from '@/components/config/products'
+// import { products } from '@/components/config/products'
 import ProductSlider from './VerticalSlider'
 import ViewAllButton from '@/components/ui/ViewAllButton'
+import { fakeProducts } from '@/components/config/products'
 // import { products } from '@/data/products' // Import your product list
 
 const ProductGrid = (
@@ -29,7 +30,7 @@ const ProductGrid = (
         ))}
       </div> */}
 
-      <ProductSlider products={products}/>
+      <ProductSlider products={fakeProducts}/>
       <div className="flex justify-center mt-5">
       <ViewAllButton link='/products'/>
 
