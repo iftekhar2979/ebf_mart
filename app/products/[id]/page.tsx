@@ -1,9 +1,11 @@
 // app/product/[id]/page.tsx
-
+'use client'
 import { AppPromoBanner } from '@/components/common/banner/AppPromoBanner';
 import { promoData } from '@/components/common/banner/data/promoData';
 import ProductGrid from '@/components/common/Products/ProductGrid';
 import { ProductDetailView } from '@/components/common/Products/SingleProduct/ProductDetailView';
+import { AllReviewsSection } from '@/components/common/review/AllReviewSection';
+import { mockReviews } from '@/components/common/review/data/reviews';
 import * as React from 'react';
 
 // --- Import Reusable Components ---
@@ -24,7 +26,10 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
       <main className="flex-grow">
         <ProductDetailView/>
       </main>
-
+<AllReviewsSection
+                reviews={mockReviews} // Use your actual fetched reviews here
+                totalCount={45} // Total count from the image design
+            />
   <ProductGrid category="You Might also Like"/>
  <div className="mx-16 my-10">
              
