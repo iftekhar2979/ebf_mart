@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation' // <-- Import the necessary hook!
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import {
@@ -14,9 +15,10 @@ import {
 } from 'react-icons/fa'
 import gsap from 'gsap'
 import clsx from 'clsx'
-import { NAV_ITEMS } from '../config/navbar.config'
+import { NAV_ITEMS } from '../config/navbar.config' // Assuming this file provides { label: string, href: string }
 
 const Navbar = () => {
+  const pathname = usePathname() // <-- Get the current path
   const navbarRef = useRef(null)
   const sidebarRef = useRef<HTMLDivElement | null>(null)
   const overlayRef = useRef<HTMLDivElement | null>(null)
@@ -58,6 +60,15 @@ const Navbar = () => {
       })
     }
   }, [isMobileMenuOpen])
+  
+  // Helper function to determine if a link is active
+  const isActive = (href: string) => {
+    // Check if the current pathname exactly matches the link href
+    if (href === '/') return pathname === '/'
+    // Check if the current pathname starts with the link href (for nested routes like /shop/product)
+    return pathname.startsWith(href)
+  }
+
 
   return (
     <>
@@ -73,9 +84,11 @@ const Navbar = () => {
                 key={item.label}
                 href={item.href}
                 className={clsx(
-                  item.underline ? 'underline' : '',
-                  item.label === 'Home' ? 'text-pink-600' : '',
-                  'hover:text-pink-500 transition-colors'
+                  item.underline && 'underline',
+                  'hover:text-pink-500 transition-colors',
+                  // --- ACTIVE LINK LOGIC ---
+                  isActive(item.href) ? 'text-pink-600 font-semibold border-b-2 border-pink-600 pb-1' : 'text-gray-700'
+                  // --- END ACTIVE LINK LOGIC ---
                 )}
               >
                 {item.label} 
@@ -140,6 +153,7 @@ const Navbar = () => {
           </Button>
         </div>
 
+        {/* Mobile Nav Links */}
         <div className="space-y-4">
           {NAV_ITEMS.map((item) => (
             <Link
@@ -147,9 +161,11 @@ const Navbar = () => {
               href={item.href}
               onClick={() => setIsMobileMenuOpen(false)}
               className={clsx(
-                'block text-base text-gray-700 px-2 py-2 rounded hover:bg-pink-100',
-                item.underline ? 'underline' : '',
-                item.label === 'Home' ? 'text-pink-600 font-semibold' : ''
+                'block text-base px-2 py-2 rounded hover:bg-pink-100 transition-colors',
+                item.underline && 'underline',
+                // --- ACTIVE LINK LOGIC FOR MOBILE ---
+                isActive(item.href) ? 'text-pink-600 font-semibold bg-pink-50' : 'text-gray-700'
+                // --- END ACTIVE LINK LOGIC FOR MOBILE ---
               )}
             >
               {item.label} {item.dropdown && <span className="ml-1">▼</span>}

@@ -90,7 +90,7 @@ export const ProductCard = ({
       <CardContent className="pt-4 px-4 pb-2">
         {/* Title */}
         <div className="flex justify-between items-center mb-1">
-          <Link href={`/products/${index}`} className="text-lg font-semibold text-gray-800">{title}</Link>
+          <Link href={`/products/${index}`} className="text-lg font-semibold underline text-blue-300 font-bold">{title}</Link>
         </div>
 
         {/* Rating */}

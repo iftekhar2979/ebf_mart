@@ -62,16 +62,16 @@ export const ProductDetailView: React.FC = () => {
   const imageGalleryRef = React.useRef<HTMLDivElement>(null);
   const infoSectionRef = React.useRef<HTMLDivElement>(null);
 
-  // GSAP Entrance Animation
-  React.useEffect(() => {
-    gsap.from([imageGalleryRef.current, infoSectionRef.current], {
-      opacity: 0,
-      y: 30,
-      duration: 0.8,
-      stagger: 0.2,
-      ease: 'power3.out',
-    });
-  }, []);
+//   // GSAP Entrance Animation
+//   React.useEffect(() => {
+//     gsap.from([imageGalleryRef.current, infoSectionRef.current], {
+//       opacity: 0,
+//       y: 30,
+//       duration: 0.8,
+//       stagger: 0.2,
+//       ease: 'power3.out',
+//     });
+//   }, []);
 
   const handleAddToCart = () => {
     console.log(`Added ${quantity} x ${product.name} (Size: ${selectedSize}, Color: ${selectedColor}) to cart`);
