@@ -3,7 +3,7 @@ import { categories } from "./data/categories";
 
 export default function CategoryGrid() {
   return (
-    <section className="bg-gray-50 py-10 px-4 rounded-3xl mx-16">
+    <section className="bg-gray-50 py-10 px-4 rounded-3xl ">
       <h2 className="text-center text-xl sm:text-2xl font-bold text-pink-600 mb-8">
         BROWSE BY PRODUCT CATEGORY
       </h2>
