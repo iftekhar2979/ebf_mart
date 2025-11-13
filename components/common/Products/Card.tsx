@@ -12,6 +12,7 @@ type ProductCardProps = {
   location: string
   price: number
   status?: string
+  shopLogo:string
 }
 
 export const ProductCard = ({
@@ -20,19 +21,20 @@ export const ProductCard = ({
   rating,
   location,
   price,
-  status = 'trending',
+  status = 'Trending',
+  shopLogo
 }: ProductCardProps) => {
   return (
     <Card className="relative w-full max-w-xs rounded-xl overflow-hidden border border-gray-200 shadow-sm">
       {/* Trending Badge */}
-      {status==='trending' && (
+      
         <div className="absolute top-2 left-2 bg-pink-600 text-white text-xs font-semibold px-3 py-1 rounded-full z-10 flex items-center gap-1">
           <span className="bg-white text-pink-600 rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-bold">
             ★
           </span>
-          Trending
+          {status}
         </div>
-      )}
+      
 
       {/* Product Image */}
       <Image
@@ -64,7 +66,7 @@ export const ProductCard = ({
         {/* Location */}
         <div className="flex items-center gap-2 text-gray-500 text-sm mb-2">
           <Image
-            src="https://placehold.co/24x24" // Optional: replace with location icon or avatar
+            src={shopLogo} // Optional: replace with location icon or avatar
             alt="location"
             width={20}
             height={20}
